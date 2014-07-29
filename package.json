@@ -1,0 +1,40 @@
+{
+  "name": "grunt-srv",
+  "version": "0.1.0",
+  "description": "grunt service launcher",
+  "keywords": [
+    "grunt",
+    "service",
+    "launcher"
+  ],
+  "license": "MIT",
+  "author": {
+    "name": "Centny",
+    "email": "centny@gmail.com",
+    "url": "https://github.com/Centny"
+  },
+  "files": [
+    "tasks"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Centny/grunt-srv.git"
+  },
+  "scripts": {
+    "test": "grunt"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.0"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4.0"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "readmeFilename": "README.md",
+  "homepage": "https://github.com/Centny/grunt-srv",
+  "_id": "grunt-srv@0.1.0",
+  "_shasum": "977e36b7b1ca742aba5aa8c58509a8b74d323259",
+  "_from": "grunt-srv@"
+}
