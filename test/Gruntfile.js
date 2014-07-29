@@ -16,32 +16,64 @@ module.exports = function(grunt) {
     },
     srv: {
       test1: {
-        command: 'sleep',
+        cmd: 'sleep',
         args: ["100"]
       },
       test2: {
-        command: 'sleep',
+        cmd: 'sleep',
         args: ["100"]
       },
       test3: {
-        command: 'sleep'
+        cmd: 'sleep'
       },
       test4: {
         options: {
           stdout: true,
           stderr: true
         },
-        command: 'sleep'
+        cmd: 'sleep'
+      },
+      test5: {
+        options: {
+          stdout: true,
+          stderr: true,
+          cwd: "../"
+        },
+        cmd: 'ls'
+      },
+      test6: {
+        options: {
+          stdout: true,
+          stderr: true,
+          cwd: "../",
+          env: {
+            "ABC": "123456"
+          }
+        },
+        cmd: 'test/c.sh'
+      },
+      test7: {
+        options: {
+          stdout: true,
+          stderr: true,
+          cwd: "../"
+        },
+        cmd: 'env',
+        args: ["PWD"]
       },
       wdm: {
         options: {
           ctrlc: true
         },
-        command: 'webdriver-manager',
+        cmd: 'webdriver-manager',
         args: ["start"]
       }
     }
   });
   //server daemon
-  grunt.registerTask('serve', ['srv-stop','srv:wdm', 'srv:test1', 'srv:test2', 'srv:test3', 'srv:test4', 'shell:sleep', 'srv-stop']);
+  grunt.registerTask('default', ['srv-stop', 'srv:wdm',
+    'srv:test1', 'srv:test2', 'srv:test3',
+    'srv:test4', 'srv:test5', 'srv:test6',
+    'srv:test7', 'shell:sleep', 'srv-stop'
+  ]);
 };

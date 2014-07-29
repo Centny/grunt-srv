@@ -1,5 +1,18 @@
 'use strict';
 module.exports = function(grunt) {
+	function env_(t) {
+		// console.log(t);
+		var env = {};
+		for (var i in process.env) {
+			env[i] = process.env[i];
+		}
+		if (t) {
+			for (var i in t) {
+				env[i] = t[i];
+			}
+		}
+		return env;
+	}
 	grunt.registerMultiTask('srv', 'Start a server...', function() {
 		var options = this.options({
 			stdout: false,
@@ -7,9 +20,9 @@ module.exports = function(grunt) {
 			ctrlc: false,
 			kill: "SIGINT"
 		});
-		var cmd = this.data.command;
+		var cmd = this.data.cmd;
 		if (cmd === undefined) {
-			throw new Error('`command` required');
+			throw new Error('`cmd` required');
 		}
 		var args = this.data.args;
 		if (args === undefined) {
@@ -19,8 +32,13 @@ module.exports = function(grunt) {
 			grunt._srv_ = new Array();
 			grunt._srv_l = 0;
 		}
+		var env = env_(options.env);
+		// console.log(env);
 		var spawn = require('child_process').spawn;
-		var exec = spawn(cmd, args);
+		var exec = spawn(cmd, args, {
+			cwd: options.cwd,
+			env: env
+		});
 		if (options.stdout) {
 			exec.stdout.pipe(process.stdout);
 		}

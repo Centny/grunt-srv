@@ -49,7 +49,7 @@ grunt.registerTask('default', ['srv:wdm']);
 ### Config
 
 
-#### command
+#### cmd
 
 **Required**  
 Type: `String`
@@ -78,4 +78,24 @@ Default: `false`
 Type: `Boolean`
 
 Show stderr in the Terminal.
+
+#### env
+Default: `null`
+Type: `Object`
+
+#### cwd
+Default: `.`
+Type: `String`
+
+#### ctrlc
+Default: `false`
+Type: `Boolean`
+
+Send ctrl+c to stop the service.
+
+#### kill
+Default: `SIGINT`
+Type: `String`
+
+Send specifed signal to stop the service.
 
