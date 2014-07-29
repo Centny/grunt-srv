@@ -63,7 +63,8 @@ module.exports = function(grunt) {
       },
       wdm: {
         options: {
-          ctrlc: true
+          ctrlc: true,
+          stdout:true
         },
         cmd: 'webdriver-manager',
         args: ["start"]
@@ -76,4 +77,5 @@ module.exports = function(grunt) {
     'srv:test4', 'srv:test5', 'srv:test6',
     'srv:test7', 'shell:sleep', 'srv-stop'
   ]);
+  grunt.registerTask('abc', ['srv:wdm', 'srv-stop']);
 };

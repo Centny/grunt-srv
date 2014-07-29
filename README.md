@@ -99,3 +99,9 @@ Type: `String`
 
 Send specifed signal to stop the service.
 
+#### wait
+Default: `500`
+Type: `Long`
+
+set wait time for service start.
+

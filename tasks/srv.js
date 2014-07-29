@@ -18,12 +18,14 @@ module.exports = function(grunt) {
 			stdout: false,
 			stderr: false,
 			ctrlc: false,
-			kill: "SIGINT"
+			kill: "SIGINT",
+			wait: 500
 		});
 		var cmd = this.data.cmd;
 		if (cmd === undefined) {
 			throw new Error('`cmd` required');
 		}
+		var done = this.async();
 		var args = this.data.args;
 		if (args === undefined) {
 			args = [];
@@ -58,6 +60,7 @@ module.exports = function(grunt) {
 		grunt._srv_[grunt._srv_.length] = exec;
 		grunt._srv_l++;
 		console.log("Starting " + this.nameArgs + " server(" + exec.pid + ")...");
+		setTimeout(done, options.wait);
 	});
 	grunt.registerTask('srv-stop', 'Stop all server.', function() {
 		var done = this.async();
