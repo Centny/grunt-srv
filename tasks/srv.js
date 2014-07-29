@@ -13,17 +13,36 @@ module.exports = function(grunt) {
 		}
 		return env;
 	}
+	grunt.SrvWebKill = function(options) {
+		var http = require("http");
+		http.get(options, function(res) {
+			var resdata = "";
+			res.setEncoding('utf8');
+			res.on('data', function(chunk) {
+				resdata += chunk;
+			});
+			res.on('end', function() {
+				console.log("SrvWebKill result: " + resdata);
+			});
+		}).on('error', function(e) {
+			console.log("SrvWebKill error: " + e.message);
+		});
+	};
 	grunt.registerMultiTask('srv', 'Start a server...', function() {
 		var options = this.options({
 			stdout: false,
-			stderr: false,
+			stderr: true,
 			ctrlc: false,
+			stopf: undefined,
 			kill: "SIGINT",
-			wait: 500
+			wait: 1000
 		});
 		var cmd = this.data.cmd;
 		if (cmd === undefined) {
 			throw new Error('`cmd` required');
+		}
+		if (options.wait < 200) {
+			throw new Error('`wait` can not less 200');
 		}
 		var done = this.async();
 		var args = this.data.args;
@@ -41,15 +60,13 @@ module.exports = function(grunt) {
 			cwd: options.cwd,
 			env: env
 		});
-		if (options.stdout) {
-			exec.stdout.pipe(process.stdout);
-		}
-		if (options.stderr) {
-			exec.stderr.pipe(process.stderr);
-		}
 		exec.options = options;
 		exec.nameArgs = this.nameArgs;
-		exec.on("close", function() {
+		exec.on("close", function(code, sig) {
+			// if (code) {
+			// 	grunt.fail.fatal("start " + this.nameArgs + " error", code);
+			// 	return;
+			// }
 			this.closed_ = true;
 			grunt._srv_l--;
 			console.log("The " + this.nameArgs + " server closed(" + this.pid + ")...");
@@ -59,15 +76,21 @@ module.exports = function(grunt) {
 		});
 		grunt._srv_[grunt._srv_.length] = exec;
 		grunt._srv_l++;
-		console.log("Starting " + this.nameArgs + " server(" + exec.pid + ")...");
+		if (options.stdout) {
+			exec.stdout.pipe(process.stdout);
+		}
+		if (options.stderr) {
+			exec.stderr.pipe(process.stderr);
+		}
 		setTimeout(done, options.wait);
+		console.log("Starting " + this.nameArgs + " server(" + exec.pid + ")...");
 	});
 	grunt.registerTask('srv-stop', 'Stop all server.', function() {
 		var done = this.async();
 		console.log("Closing " + (grunt._srv_l ? grunt._srv_l : 0) + " server...");
 		if (!grunt._srv_ || !grunt._srv_.length || !grunt._srv_l) {
 			done();
-			return
+			return;
 		}
 		grunt.event.on("_SRV_DONE_", function() {
 			done();
@@ -80,6 +103,8 @@ module.exports = function(grunt) {
 			}
 			if (exec.options.ctrlc) {
 				exec.stdin.write('\x03');
+			} else if (exec.options.stopf) {
+				exec.options.stopf(exec);
 			} else {
 				exec.kill(exec.options.kill);
 			}

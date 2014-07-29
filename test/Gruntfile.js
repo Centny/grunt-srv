@@ -1,5 +1,4 @@
 module.exports = function(grunt) {
-
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadTasks('../tasks');
   // grunt.loadNpmTasks('grunt-selenium-launcher');
@@ -64,13 +63,15 @@ module.exports = function(grunt) {
       wdm: {
         options: {
           ctrlc: true,
-          stdout:true
+          stdout: true,
+          wait: 1000
         },
         cmd: 'webdriver-manager',
         args: ["start"]
       }
     }
   });
+  // nonexistentFunc();
   //server daemon
   grunt.registerTask('default', ['srv-stop', 'srv:wdm',
     'srv:test1', 'srv:test2', 'srv:test3',
@@ -78,4 +79,6 @@ module.exports = function(grunt) {
     'srv:test7', 'shell:sleep', 'srv-stop'
   ]);
   grunt.registerTask('abc', ['srv:wdm', 'srv-stop']);
+  grunt.registerTask('test5', ['srv:test5']);
+  console.log(this.process);
 };
