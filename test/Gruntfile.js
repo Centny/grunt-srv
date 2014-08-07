@@ -57,6 +57,15 @@ module.exports = function(grunt) {
         },
         cmd: 'env PWD',
       },
+      cmd: {
+        options: {
+          stdout: true,
+          stderr: true,
+          cwd: "../"
+        },
+        ucmd: 'echo ucmd',
+        wcmd: 'echo wcmd'
+      },
       wdm: {
         options: {
           ctrlc: true,
@@ -72,7 +81,7 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['srv-stop', 'srv:wdm',
     'srv:test1', 'srv:test2', 'srv:test3',
     'srv:test4', 'srv:test5', 'srv:test6',
-    'srv:test7', 'shell:sleep', 'srv-stop'
+    'srv:test7', 'shell:sleep', 'srv:cmd', 'srv-stop'
   ]);
   grunt.registerTask('abc', ['srv:wdm', 'srv-stop']);
   grunt.registerTask('test5', ['srv:test5']);

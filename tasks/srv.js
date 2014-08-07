@@ -13,6 +13,7 @@ module.exports = function(grunt) {
 		}
 		return env;
 	}
+
 	grunt.SrvWebKill = function(options) {
 		var http = require("http");
 		http.get(options, function(res) {
@@ -37,7 +38,19 @@ module.exports = function(grunt) {
 			kill: "SIGINT",
 			wait: 1000
 		});
-		var cmd = this.data.cmd;
+
+		var cmd = this.data.cmd;;
+		switch (process.platform) {
+			case "win32":
+				if (this.data.wcmd) {
+					cmd = this.data.wcmd;
+				}
+			default:
+				if (this.data.ucmd) {
+					cmd = this.data.ucmd;
+				}
+		}
+
 		if (cmd === undefined) {
 			throw new Error('`cmd` required');
 		}

@@ -47,7 +47,8 @@ grunt.initConfig({
             grunt.SrvWebKill("http://localhost:5457/jcr/exit");
           }
         },
-        cmd: 'jcr start -o /tmp/e2e'
+        ucmd: 'jcr start -o /tmp/e2e',
+        wcmd: 'jcr start -o C:\\tmp\\e2e'
       }
     }
 });
@@ -58,12 +59,18 @@ grunt.registerTask('default', ['srv:wdm', 'srv:jcr', 'srv-stop']);
 ### Config
 
 
-#### cmd
+#### cmd/wcmd/ucmd
 
 **Required**  
 Type: `String`
 
 The command you want to run or a function which returns it. not include command arguments.
+
+cmd: the general command.
+
+wcmd: the window command.
+
+ucmd: the unix command.
 
 ### Options
 
