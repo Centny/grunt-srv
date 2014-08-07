@@ -45,10 +45,12 @@ module.exports = function(grunt) {
 				if (this.data.wcmd) {
 					cmd = this.data.wcmd;
 				}
+				break;
 			default:
 				if (this.data.ucmd) {
 					cmd = this.data.ucmd;
 				}
+				break;
 		}
 
 		if (cmd === undefined) {
