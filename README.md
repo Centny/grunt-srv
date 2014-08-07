@@ -28,22 +28,31 @@ grunt.loadNpmTasks('grunt-srv');
 
 ### Example config
 
-```js
+```
 grunt.initConfig({
-	srv: {								// Task
-		wdm: {						// Target
-			options: {						// Options
-				stderr: true,
-				stdout: true
-			},
-			command: 'webdriver-manager',
-			args: ["start"]
-		}
-	}
+    srv: {
+      wdm: {
+        options: {
+          ctrlc: true,//kill service by ctrl+c,default is kill.
+          wait: 1000
+        },
+        cmd: 'webdriver-manager start'
+      },
+      jcr: {
+        options: {
+          stdout: true,
+          wait: 1000,
+          stopf: function(exec) {
+             //kill service by web
+            grunt.SrvWebKill("http://localhost:5457/jcr/exit");
+          }
+        },
+        cmd: 'jcr start -o /tmp/e2e'
+      }
+    }
 });
-
-grunt.loadNpmTasks('grunt-srv');
-grunt.registerTask('default', ['srv:wdm']);
+//srv-stop is inner registered task,adding for stop the services.
+grunt.registerTask('default', ['srv:wdm', 'srv:jcr', 'srv-stop']);
 ```
 
 ### Config
@@ -55,11 +64,6 @@ grunt.registerTask('default', ['srv:wdm']);
 Type: `String`
 
 The command you want to run or a function which returns it. not include command arguments.
-#### args
-**Optioned**  
-Type: `String Array`
-
-The command command arguments.
 
 ### Options
 
@@ -103,5 +107,10 @@ Send specifed signal to stop the service.
 Default: `500`
 Type: `Long`
 
-set wait time for service start.
+Set wait time for service start.
 
+#### stopf
+Default: `undefined`
+Type: `Function(exec)` `exec:the subprocess`
+
+The custom function to stop service,instead of ctrl+c or kill.

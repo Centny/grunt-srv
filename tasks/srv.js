@@ -55,8 +55,8 @@ module.exports = function(grunt) {
 		}
 		var env = env_(options.env);
 		// console.log(env);
-		var spawn = require('child_process').spawn;
-		var exec = spawn(cmd, args, {
+		// var spawn = .spawn;
+		var exec = require('child_process').exec(cmd, {
 			cwd: options.cwd,
 			env: env
 		});
@@ -95,6 +95,26 @@ module.exports = function(grunt) {
 		grunt.event.on("_SRV_DONE_", function() {
 			done();
 		});
+		var slen = grunt._srv_.length;
+		for (var i in grunt._srv_) {
+			var exec = grunt._srv_[i];
+			if (exec.closed_) {
+				continue;
+			}
+			if (exec.options.ctrlc) {
+				exec.stdin.write('\x03');
+			} else if (exec.options.stopf) {
+				exec.options.stopf(exec);
+			} else {
+				exec.kill(exec.options.kill);
+			}
+		}
+	});
+	grunt.registerTask('srv-stop-n', 'Stop all server.', function() {
+		console.log("Closing " + (grunt._srv_l ? grunt._srv_l : 0) + " server...");
+		if (!grunt._srv_ || !grunt._srv_.length || !grunt._srv_l) {
+			return;
+		}
 		var slen = grunt._srv_.length;
 		for (var i in grunt._srv_) {
 			var exec = grunt._srv_[i];

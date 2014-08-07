@@ -15,12 +15,10 @@ module.exports = function(grunt) {
     },
     srv: {
       test1: {
-        cmd: 'sleep',
-        args: ["100"]
+        cmd: 'sleep 100'
       },
       test2: {
-        cmd: 'sleep',
-        args: ["100"]
+        cmd: 'sleep 100'
       },
       test3: {
         cmd: 'sleep'
@@ -57,8 +55,7 @@ module.exports = function(grunt) {
           stderr: true,
           cwd: "../"
         },
-        cmd: 'env',
-        args: ["PWD"]
+        cmd: 'env PWD',
       },
       wdm: {
         options: {
@@ -66,8 +63,7 @@ module.exports = function(grunt) {
           stdout: true,
           wait: 1000
         },
-        cmd: 'webdriver-manager',
-        args: ["start"]
+        cmd: 'webdriver-manager start'
       }
     }
   });
