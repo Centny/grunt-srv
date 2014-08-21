@@ -145,4 +145,15 @@ module.exports = function(grunt) {
 			}
 		}
 	});
+	grunt.registerTask('srv-wait', 'Waiting all server.', function() {
+		var done = this.async();
+		console.log("Waiting " + (grunt._srv_l ? grunt._srv_l : 0) + " server...");
+		if (!grunt._srv_ || !grunt._srv_.length || !grunt._srv_l) {
+			done();
+			return;
+		}
+		grunt.event.on("_SRV_DONE_", function() {
+			done();
+		});
+	});
 };
